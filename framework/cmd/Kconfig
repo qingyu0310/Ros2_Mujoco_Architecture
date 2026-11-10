@@ -1,0 +1,10 @@
+# cmd/Kconfig —— 横切辅助能力（当前只有运行配置读取）。
+# 架构层能力默认 n，由业务层 select 拉起。
+#
+# 调试台与日志归 framework/shell/，不在本文件。
+
+config DUST_CMD_CONFIG
+    bool "YAML runtime config loader"
+    default n
+    help
+      Per-thread YAML parameter loading and field validation (cmd/config).

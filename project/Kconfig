@@ -1,0 +1,48 @@
+# 业务门禁 Kconfig（位置：<repo>/project）
+# 业务门禁符号（TRD_ / USE_）保持原名，不加 DUST_ 前缀
+# 业务门禁 select 的架构符号统一 DUST_ 前缀
+#
+# 骨架工程不含任何具体业务：只有调试台与 test 线程。
+# test 线程是六模块装配的最小可验证单元（线程模板 + 日志 + var + 注册段）。
+
+# ============================================================================
+
+# =================       功能配置区 — 使用开关       ========================
+
+config USE_CMD_SHELL
+    bool "Shell debug console (thread + var/log)"
+    default y
+    select DUST_CMD_SHELL_LOG
+    select DUST_CMD_SHELL_VAR
+    help
+      调试台：控制台线程 + log/var 子命令。
+
+config USE_CMD_CONFIG
+    bool "YAML runtime config loader"
+    default y
+    select DUST_CMD_CONFIG
+    help
+      各线程的 YAML 参数读取与字段校验（cmd/config）。
+
+# ============================================================================
+
+# =================               TRD_TEST               ====================
+
+config TRD_TEST
+    bool "User test thread"
+    default y
+    help
+      骨架自检线程：验证线程模板、日志、var 与注册段装配是否可用。
+      不依赖任何外设。
+
+# ============================================================================
+
+# =================                TRD_SIM                ====================
+
+config TRD_SIM
+    bool "MuJoCo sim thread"
+    default y
+    select DUST_COM_MUJOCO
+    select DUST_COM_MUJOCO_VIEWER
+    help
+      MuJoCo 仿真线程：推进物理，界面在独立线程。
